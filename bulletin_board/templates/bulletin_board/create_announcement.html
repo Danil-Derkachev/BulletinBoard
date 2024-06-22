@@ -5,11 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Создание объявления</h1>
-<form action="" method="post">
+
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Создать">
+    <button type="submit">Создать</button>
 </form>
 
 </body>
