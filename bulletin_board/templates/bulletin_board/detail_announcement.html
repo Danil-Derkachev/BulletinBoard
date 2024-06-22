@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>Страница объявления</h1>
+</div>
+<div>
+    <form action="/" method="get">
+        <input type="submit" value="На главную страницу">
+    </form>
+</div>
+<div>
+    <p>{{ detail_announcement.title }}</p>
+    <p>{{ detail_announcement.text }}</p>
+    <img src="{{ detail_announcement.image.url }}" alt="">
+    <br>
+    <a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a>
+</div>
+</body>
+</html>
