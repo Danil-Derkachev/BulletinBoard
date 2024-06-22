@@ -2,41 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Доска объявлений</title>
+    <title>Отклики</title>
 </head>
 <body>
 {% load custom_tags %}
 
-<h1>Главная страница</h1>
-{% if user.is_authenticated %}
-<h3>Авторизован как {{request.user.username}}</h3>
-<button><a href="{% url 'account_logout' %}">Выйти</a></button>
-<br>
-<button><a href="{% url 'list_responses' %}">Отклики</a></button>
-{% else %}
-<h3>Авторизован как гость</h3>
-<button><a href="{% url 'account_login' %}">Войти</a></button>
-<button><a href="{% url 'account_signup' %}">Зарегистрироваться</a></button>
-{% endif %}
-
-<button><a href="{% url 'create_announcement' %}">Создать объявление</a></button>
-
+<h3>Отклики на мои объявления</h3>
+<button><a href="{% url 'list_announcements' %}">На главную страницу</a></button>
 <hr>
 <h3>Поиск по фильтрам</h3>
 <form action="" method="get">
     {{ filterset.form.as_p }}
     <input type="submit" value="Найти"/>
 </form>
-
 <hr>
-{% for announcement in list_announcements %}
-<h3>Категория: {{ announcement.category }}</h3>
-<h4>{{ announcement.title }}</h4>
-{{ announcement.text|truncatechars:50 }}<br>
-Дата: {{ announcement.datetime|date:'d.m.Y' }} {{ announcement.datetime|time:'H:i' }}
-<br>
-<button><a href="{{ announcement.get_absolute_url }}">Подробнее</a></button>
+{% for response in list_responses %}
+{% if response.announcement.user.id == user.id %}
+Категория: {{ response.announcement.category }} <br>
+Заголовок объявления: {{ response.announcement.title }} <br>
+Откликнувшийся пользователь: {{ response.user.username }} <br>
+Сообщение от пользователя: {{ response.text }} <br>
+Дата: {{ response.datetime|date:'d.m.Y' }} {{ response.datetime|time:'H:i' }}<br>
+<button><a href="{% url 'delete_response' response.pk %}">Удалить</a></button>
+{% if not response.is_accepted %}
+<button><a href="{% url 'accept_response' response.pk %}">Принять</a></button>
+{% endif %}
 <hr>
+{% endif %}
 {% endfor %}
 
 <div>

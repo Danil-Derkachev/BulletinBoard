@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Страница объявления</title>
 </head>
 <body>
 <div>
@@ -12,13 +12,21 @@
     <form action="/" method="get">
         <input type="submit" value="На главную страницу">
     </form>
+    <hr>
 </div>
 <div>
+    <p>Категория: {{ detail_announcement.category }}</p>
     <p>{{ detail_announcement.title }}</p>
     <p>{{ detail_announcement.text }}</p>
-    <img src="{{ detail_announcement.image.url }}" alt="">
+    Дата: {{ detail_announcement.datetime|date:'d.m.Y' }} {{ detail_announcement.datetime|time:'H:i' }}<br>
+    {% if detail_announcement.image %}
+    <img src="{{ detail_announcement.image.url }}">
+    {% endif %}
+    {% if detail_announcement.file %}
+    < src="{{ detail_announcement.file.url }}">
+    {% endif %}
     <br>
-    <a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a>
+    <button><a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a></button>
 </div>
 </body>
 </html>

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    
+    'django_filters',
 
     'bulletin_board',
 ]
@@ -140,8 +142,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
@@ -154,6 +156,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Отправка всех Email в консоль
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
