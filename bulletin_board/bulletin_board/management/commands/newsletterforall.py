@@ -6,7 +6,7 @@ from bulletin_board_app.tasks import send_email_for_all
 
 
 class Command(BaseCommand):
-    help = 'Аргументом команды является название html файла по пути bulletin_board_app/templates/'  # показывает подсказку при вводе "python manage.py <ваша команда> --help"
+    help = 'Аргументом команды является название html файла по пути bulletin_board/templates/'  # показывает подсказку при вводе "python manage.py <ваша команда> --help"
     missing_args_message = 'Недостаточно аргументов'
     requires_migrations_checks = False  # напоминать ли о миграциях. Если true — то будет напоминание о том, что не сделаны все миграции (если такие есть)
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         file_is_exist = os.path.isfile(
             os.path.join(
-                settings.BASE_DIR, 'bulletin_board_app/templates/' + options["template_name"] + '.html'
+                settings.BASE_DIR, 'bulletin_board/templates/' + options["template_name"] + '.html'
             )
         )
         if file_is_exist:
