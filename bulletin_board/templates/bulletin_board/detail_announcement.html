@@ -35,13 +35,13 @@
     <img src="{{ detail_announcement.image.url }}">
     {% endif %}
     <br>
-    <p>Вложенные файлы:</p>
     {% if detail_announcement.file %}
+    <p>Вложенные файлы:</p>
     <a href="{{ detail_announcement.file.url }}">{{ detail_announcement.file }}</a>
     {% endif %}
     <br>
-    <p>Вложенные видео:</p>
     {% if detail_announcement.video %}
+    <p>Вложенные видео:</p>
     <a href="{{ detail_announcement.video.url }}">{{ detail_announcement.video }}</a>
     {% endif %}
 </div>
