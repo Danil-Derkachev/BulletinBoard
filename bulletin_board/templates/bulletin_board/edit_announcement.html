@@ -5,14 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Создание объявления</h1>
-<button><a href="{% url 'list_announcements' %}">На главную страницу</a></button>
-<hr>
+<h1>Редактирование объявления</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Создать</button>
+    <input type="submit" value="Сохранить"/>
 </form>
-
 </body>
 </html>

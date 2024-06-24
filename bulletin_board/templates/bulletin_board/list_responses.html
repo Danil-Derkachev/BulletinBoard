@@ -7,7 +7,7 @@
 <body>
 {% load custom_tags %}
 
-<h3>Отклики на мои объявления</h3>
+<h1>Отклики на мои объявления</h1>
 <button><a href="{% url 'list_announcements' %}">На главную страницу</a></button>
 <hr>
 <h3>Поиск по фильтрам</h3>
@@ -29,6 +29,8 @@
 {% endif %}
 <hr>
 {% endif %}
+{% empty %}
+<h3>Ничего не найдено</h3>
 {% endfor %}
 
 <div>
