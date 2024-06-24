@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from django.core.cache import cache
 
 from .models import *
 from .forms import *
@@ -40,6 +41,13 @@ class AnnouncementDetail(DetailView):
             user=self.request.user.id
         ).values('announcement', 'user')
         return context
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'detail_announcement-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'detail_announcement-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class AnnouncementCreate(LoginRequiredMixin, CreateView):
