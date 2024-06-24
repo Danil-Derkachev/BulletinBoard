@@ -22,7 +22,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bulletin_board.urls')),
-    path('accounts/', include('allauth.urls'))
+    path('accounts/', include('allauth.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Необходимо для отображения и скачивания медиа
+# Необходимо для отображения и скачивания медиа
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

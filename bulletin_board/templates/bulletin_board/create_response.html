@@ -6,6 +6,8 @@
 </head>
 <body>
 <h1>Создание отклика</h1>
+<button><a href="{% url 'list_announcements' %}">На главную страницу</a></button>
+<hr>
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}

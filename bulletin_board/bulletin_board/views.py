@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 
 from .models import *
 from .forms import *
@@ -22,7 +22,7 @@ class AnnouncementsList(ListView):
         self.filterset = AnnouncementFilter(self.request.GET, queryset)
         return self.filterset.qs
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
@@ -32,6 +32,14 @@ class AnnouncementDetail(DetailView):
     model = Announcement
     template_name = 'bulletin_board/detail_announcement.html'
     context_object_name = 'detail_announcement'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_already_responded'] = Response.objects.filter(
+            announcement=self.kwargs['pk'],
+            user=self.request.user.id
+        ).values('announcement', 'user')
+        return context
 
 
 class AnnouncementCreate(LoginRequiredMixin, CreateView):
@@ -45,11 +53,22 @@ class AnnouncementCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class AnnouncementEdit(LoginRequiredMixin, UpdateView):
+    form_class = AnnouncementForm
+    model = Announcement
+    template_name = 'bulletin_board/edit_announcement.html'
+
+
+class AnnouncementDelete(LoginRequiredMixin, DeleteView):
+    model = Announcement
+    template_name = 'bulletin_board/delete_announcement.html'
+    success_url = reverse_lazy('list_announcements')
+
+
 class ResponseCreate(LoginRequiredMixin, CreateView):
     form_class = ResponseForm
     model = Response
     template_name = 'bulletin_board/create_response.html'
-    success_url = '/'
 
     def form_valid(self, form):
         response = form.save(commit=False)
@@ -57,6 +76,10 @@ class ResponseCreate(LoginRequiredMixin, CreateView):
         response.announcement = Announcement.objects.get(id=self.kwargs['pk'])
         send_email_to_announcement_creator.apply_async([self.kwargs['pk']])
         return super().form_valid(form)
+
+    def get_success_url(self):
+        success_url = reverse(viewname='detail_announcement', args=[self.kwargs['pk']])
+        return success_url
 
 
 class ResponsesList(LoginRequiredMixin, ListView):
@@ -74,7 +97,9 @@ class ResponsesList(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
-        context['responses'] = Response.objects.filter(announcement__user=self.request.user.id)
+        context['responses'] = Response.objects.select_related('announcement').filter(
+            announcement__user=self.request.user.id
+        )
         return context
 
 

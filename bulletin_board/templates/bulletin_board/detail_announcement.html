@@ -16,19 +16,31 @@
 </div>
 <div>
     <p>Категория: {{ detail_announcement.category }}</p>
+    <p>Создатель объявления: {{ detail_announcement.user.username }}</p>
     <p>{{ detail_announcement.title }}</p>
     <p>{{ detail_announcement.text }}</p>
-    Дата: {{ detail_announcement.datetime|date:'d.m.Y' }} {{ detail_announcement.datetime|time:'H:i' }}<br>
+    <p>Дата: {{ detail_announcement.datetime|date:'d.m.Y' }} {{ detail_announcement.datetime|time:'H:i' }}</p>
+    {% if detail_announcement.user == request.user %}
+    <button><a href="{% url 'delete_announcement' detail_announcement.id %}">Удалить объявление</a></button>
+    <button><a href="{% url 'edit_announcement' detail_announcement.id %}">Редактировать объявление</a></button>
+    {% endif %}
+    {% if user_already_responded %}
+    <br>*Отклик отправлен
+    {% else %}
     <button><a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a></button>
+    {% endif %}
     <br>
     {% if detail_announcement.image %}
+    <p>Вложенные изображения:</p>
     <img src="{{ detail_announcement.image.url }}">
     {% endif %}
     <br>
+    <p>Вложенные файлы:</p>
     {% if detail_announcement.file %}
     <a href="{{ detail_announcement.file.url }}">{{ detail_announcement.file }}</a>
     {% endif %}
     <br>
+    <p>Вложенные видео:</p>
     {% if detail_announcement.video %}
     <a href="{{ detail_announcement.video.url }}">{{ detail_announcement.video }}</a>
     {% endif %}

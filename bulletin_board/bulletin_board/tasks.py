@@ -54,7 +54,6 @@ def send_email_to_response_creator(response_pk):
 @shared_task
 def send_email_for_all(template_name):
     users = User.objects.all().values('username', 'email')
-    print(users)
     for user in users:
         username = user['username']
         email = user['email']

@@ -30,13 +30,15 @@
 
 <hr>
 {% for announcement in list_announcements %}
-<h3>Категория: {{ announcement.category }}</h3>
-<h4>{{ announcement.title }}</h4>
-{{ announcement.text|truncatechars:50 }}<br>
-Дата: {{ announcement.datetime|date:'d.m.Y' }} {{ announcement.datetime|time:'H:i' }}
-<br>
+<p>Категория: {{ announcement.category }}</p>
+<p>Создатель объявления: {{ announcement.user.username }}</p>
+<p>{{ announcement.title }}</p>
+<p>{{ announcement.text|truncatechars:50 }}</p>
+<p>Дата: {{ announcement.datetime|date:'d.m.Y' }} {{ announcement.datetime|time:'H:i' }}</p>
 <button><a href="{{ announcement.get_absolute_url }}">Подробнее</a></button>
 <hr>
+{% empty %}
+<h3>Ничего не найдено</h3>
 {% endfor %}
 
 <div>
