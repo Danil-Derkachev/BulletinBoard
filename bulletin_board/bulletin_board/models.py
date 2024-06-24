@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
+from django.core.cache import cache
 
 
 class Category(models.Model):
@@ -44,6 +45,10 @@ class Announcement(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail_announcement', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'detail_announcement-{self.pk}')
 
 
 class Response(models.Model):
