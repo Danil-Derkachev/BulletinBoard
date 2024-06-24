@@ -12,7 +12,7 @@ from .filters import *
 
 class AnnouncementsList(ListView):
     model = Announcement
-    template_name = 'bulletin_board/list_announcements.html'
+    template_name = 'bulletin_board_app/list_announcements.html'
     context_object_name = 'list_announcements'
     paginate_by = 3
     ordering = '-datetime'
@@ -30,14 +30,14 @@ class AnnouncementsList(ListView):
 
 class AnnouncementDetail(DetailView):
     model = Announcement
-    template_name = 'bulletin_board/detail_announcement.html'
+    template_name = 'bulletin_board_app/detail_announcement.html'
     context_object_name = 'detail_announcement'
 
 
 class AnnouncementCreate(LoginRequiredMixin, CreateView):
     form_class = AnnouncementForm
     model = Announcement
-    template_name = 'bulletin_board/create_announcement.html'
+    template_name = 'bulletin_board_app/create_announcement.html'
 
     def form_valid(self, form):
         announcement = form.save(commit=False)
@@ -48,7 +48,7 @@ class AnnouncementCreate(LoginRequiredMixin, CreateView):
 class ResponseCreate(LoginRequiredMixin, CreateView):
     form_class = ResponseForm
     model = Response
-    template_name = 'bulletin_board/create_response.html'
+    template_name = 'bulletin_board_app/create_response.html'
     success_url = '/'
 
     def form_valid(self, form):
@@ -61,7 +61,7 @@ class ResponseCreate(LoginRequiredMixin, CreateView):
 
 class ResponsesList(LoginRequiredMixin, ListView):
     model = Response
-    template_name = 'bulletin_board/list_responses.html'
+    template_name = 'bulletin_board_app/list_responses.html'
     context_object_name = 'list_responses'
     paginate_by = 3
     ordering = '-datetime'
@@ -80,7 +80,7 @@ class ResponsesList(LoginRequiredMixin, ListView):
 
 class ResponseDelete(LoginRequiredMixin, DeleteView):
     model = Response
-    template_name = 'bulletin_board/delete_response.html'
+    template_name = 'bulletin_board_app/delete_response.html'
     success_url = reverse_lazy('list_responses')
 
 

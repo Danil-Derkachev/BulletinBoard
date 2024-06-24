@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     
     'django_filters',
 
-    'bulletin_board',
+    'bulletin_board_app',
 ]
 
 SITE_ID = 1
