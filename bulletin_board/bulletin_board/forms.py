@@ -6,7 +6,7 @@ from .models import Announcement, Response
 class AnnouncementForm(forms.ModelForm):
     class Meta:
         model = Announcement
-        fields = ['category', 'title', 'text', 'image', 'file']
+        fields = ['category', 'title', 'text', 'image', 'file', 'video']
 
 
 class ResponseForm(forms.ModelForm):

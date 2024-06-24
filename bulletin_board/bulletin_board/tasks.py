@@ -1,5 +1,6 @@
 from celery import shared_task
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
@@ -48,3 +49,27 @@ def send_email_to_response_creator(response_pk):
     )
     msg.attach_alternative(html_content, 'text/html')
     msg.send()
+
+
+@shared_task
+def send_email_for_all(template_name):
+    users = User.objects.all().values('username', 'email')
+    print(users)
+    for user in users:
+        username = user['username']
+        email = user['email']
+        text_content = f'Здравствуй, {username}! Это текстовая новостная рассылка.'
+        html_content = render_to_string(
+            template_name=template_name + '.html',
+            context={
+                'username': username,
+            }
+        )
+        msg = EmailMultiAlternatives(
+            subject='Новостная рассылка',
+            body=text_content,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[email]
+        )
+        msg.attach_alternative(html_content, 'text/html')
+        msg.send()

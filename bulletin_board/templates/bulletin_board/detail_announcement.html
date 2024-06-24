@@ -19,14 +19,19 @@
     <p>{{ detail_announcement.title }}</p>
     <p>{{ detail_announcement.text }}</p>
     Дата: {{ detail_announcement.datetime|date:'d.m.Y' }} {{ detail_announcement.datetime|time:'H:i' }}<br>
+    <button><a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a></button>
+    <br>
     {% if detail_announcement.image %}
     <img src="{{ detail_announcement.image.url }}">
     {% endif %}
+    <br>
     {% if detail_announcement.file %}
-    < src="{{ detail_announcement.file.url }}">
+    <a href="{{ detail_announcement.file.url }}">{{ detail_announcement.file }}</a>
     {% endif %}
     <br>
-    <button><a href="{% url 'create_response' detail_announcement.id %}">Откликнуться</a></button>
+    {% if detail_announcement.video %}
+    <a href="{{ detail_announcement.video.url }}">{{ detail_announcement.video }}</a>
+    {% endif %}
 </div>
 </body>
 </html>

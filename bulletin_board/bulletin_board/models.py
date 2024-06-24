@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 
@@ -16,9 +17,27 @@ class Announcement(models.Model):
     text = models.TextField(verbose_name='Текст')
     datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    image = models.ImageField(null=True, blank=True, upload_to='images/%Y/%m/%d', verbose_name='Изображения')
-    # TODO Реализовать добавление видео, гифок и документов
-    #file = models.FileField(null=True, blank=True, upload_to='files/%Y/%m/%d', verbose_name='Файлы')
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='images/%Y/%m/%d',
+        verbose_name='Изображения',
+        validators=[FileExtensionValidator(allowed_extensions=['png'])]
+    )
+    file = models.FileField(
+        null=True,
+        blank=True,
+        upload_to='files/%Y/%m/%d',
+        verbose_name='Файлы',
+        validators=[FileExtensionValidator(allowed_extensions=['docx'])]
+    )
+    video = models.FileField(
+        null=True,
+        blank=True,
+        upload_to='videos/%Y/%m/%d',
+        verbose_name='Видео',
+        validators=[FileExtensionValidator(allowed_extensions=['mp4'])]
+    )
 
     def __str__(self):
         return f'{self.pk} : {self.title}'
