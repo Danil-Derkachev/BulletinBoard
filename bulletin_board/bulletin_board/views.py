@@ -12,6 +12,7 @@ from .filters import *
 
 
 class AnnouncementsList(ListView):
+    queryset = Announcement.objects.select_related('user', 'category')
     model = Announcement
     template_name = 'bulletin_board/list_announcements.html'
     context_object_name = 'list_announcements'
@@ -30,6 +31,7 @@ class AnnouncementsList(ListView):
 
 
 class AnnouncementDetail(DetailView):
+    queryset = Announcement.objects.select_related('user')
     model = Announcement
     template_name = 'bulletin_board/detail_announcement.html'
     context_object_name = 'detail_announcement'
@@ -91,6 +93,7 @@ class ResponseCreate(LoginRequiredMixin, CreateView):
 
 
 class ResponsesList(LoginRequiredMixin, ListView):
+    queryset = Response.objects.select_related('user', 'announcement__user')
     model = Response
     template_name = 'bulletin_board/list_responses.html'
     context_object_name = 'list_responses'
@@ -105,9 +108,7 @@ class ResponsesList(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
-        context['responses'] = Response.objects.select_related('announcement').filter(
-            announcement__user=self.request.user.id
-        )
+        #context['responses'] = Response.objects.filter(announcement__user=self.request.user.id)
         return context
 
 
