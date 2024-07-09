@@ -1,3 +1,4 @@
 .idea
 .venv
 bulletin_board/.env
+/bulletin_board/cache_files/
